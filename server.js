@@ -1,25 +1,42 @@
+const express = require('express');
 const puppeteer = require('puppeteer');
+const app = express();
 
-(async () => {
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
+app.get('/print', async (req, res) => {
+  try {
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
 
-  await page.goto('https://app.pipefy.com/login');
+    const page = await browser.newPage();
 
-  await page.type('input[name=email]', 'juridicomgmultas@gmail.com');
-  await page.click('button[type=submit]');
-  await page.waitForTimeout(2000);
+    await page.goto('https://app.pipefy.com/login');
 
-  await page.type('input[name=password]', 'Mg.12345@');
-  await page.click('button[type=submit]');
-  await page.waitForNavigation();
+    await page.type('input[name=email]', 'juridicomgmultas@gmail.com');
+    await page.click('button[type=submit]');
+    await page.waitForTimeout(2000);
 
-  await page.goto('https://app.pipefy.com/apollo_databases/304722696');
-  await page.waitForSelector('button:has-text("Criar registro")', { timeout: 10000 });
-  await page.click('button:has-text("Criar registro")');
+    await page.type('input[name=password]', 'Mg.12345@');
+    await page.click('button[type=submit]');
+    await page.waitForNavigation();
 
-  await page.screenshot({ path: 'formulario_cliente.png' });
-  console.log("✅ Print tirado com sucesso!");
+    await page.goto('https://app.pipefy.com/apollo_databases/304722696');
+    await page.waitForSelector('button:has-text("Criar registro")', { timeout: 10000 });
+    await page.click('button:has-text("Criar registro")');
 
-  await browser.close();
-})();
+    await page.screenshot({ path: 'formulario_cliente.png' });
+    await browser.close();
+
+    console.log("✅ Print tirado com sucesso!");
+    res.send('✅ Print tirado com sucesso!');
+  } catch (err) {
+    console.error("❌ Erro:", err);
+    res.status(500).send('❌ Erro ao executar o robô.');
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
+});
