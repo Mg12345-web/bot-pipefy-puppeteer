@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Robô que acessa o Pipefy e tira print do formulário",
   "main": "server.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server.js"
   },
