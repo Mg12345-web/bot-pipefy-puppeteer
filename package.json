@@ -1,0 +1,15 @@
+{
+  "name": "bot-pipefy-puppeteer",
+  "version": "1.0.0",
+  "description": "Robô que acessa o Pipefy e tira print do formulário",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.11.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
